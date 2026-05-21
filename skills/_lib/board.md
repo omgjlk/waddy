@@ -4,6 +4,27 @@ The waddy project board is a GitHub Projects (v2) board. All interaction goes
 through `github-mcp-server` (see [tool preference memo for @omgjlk]).
 Configuration lives in `private/config.json`.
 
+## ⚠️ NEVER call `updateProjectV2Field` to modify status options
+
+GraphQL's `updateProjectV2Field` mutation **replaces** the entire
+`singleSelectOptions` array, even when you pass back every existing
+option with the same names. GitHub assigns each option a brand-new
+`optionId`, which orphans every existing item whose status pointed at
+the old ids — they all collapse to "No Status" in the UI. On a board
+with hundreds of Done items this is silently catastrophic; the
+restoration requires fetching every item, mapping by option *name*, and
+re-applying the status via `updateProjectV2ItemFieldValue` one at a
+time. There is no rollback.
+
+**Add or rename status options manually via the project Settings UI**
+(Project page → ··· → Settings → Status field → Add option). Then
+read the new option ids back with the github-mcp-server
+`list_project_fields` call and store them in `private/config.json` →
+`board.status_options`.
+
+This rule applies any time you need to change *any* single-select field
+on the board, not just Status.
+
 ## Reading `private/config.json`
 
 ```json
