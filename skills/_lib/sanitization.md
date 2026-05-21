@@ -36,7 +36,7 @@ Better to ask than to redact a leaked commit later.
 | `skills/start-task/SKILL.md` describing the *shape* of the input | An example dump containing real PR titles |
 | `templates/task-card.md` with placeholder body | A task-card.md preseeded with a real engineer's name |
 | `README.md` saying "I have ADHD and multitask" | `README.md` listing actual projects I work on |
-| `_lib/board.md` describing how to use field IDs | Hardcoded `PVTSSF_lADNJr_OAJanis4Ha6in` in a tracked file |
+| `_lib/board.md` describing how to use field IDs | Hardcoded `PVTSSF_xxxxxxxxxxxxxxxxxxxxxx` in a tracked file |
 
 The last row is the easiest to get wrong. The waddy *agent* may use real
 IDs at runtime (it reads them from `private/config.json`), but the *tracked

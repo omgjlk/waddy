@@ -99,7 +99,7 @@ Notes:
 - `updated_field.id` is the **numeric** field database id
   (`status_field_database_id` in config), not the `PVTSSF_...` node id.
 - `updated_field.value` for a single-select field is the **bare option id
-  string** (e.g. `"ecccd1b9"`), NOT a wrapped object like
+  string** (e.g. `"<option-id>"`), NOT a wrapped object like
   `{single_select_option_id: "..."}`. The MCP server rejects the wrapped
   form with a 422.
 - `item_id` for `update_project_item` is the numeric `databaseId` returned
