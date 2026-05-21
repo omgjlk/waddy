@@ -11,7 +11,7 @@ Configuration lives in `private/config.json`.
   "board": {
     "owner": "<org-or-user-login>",
     "owner_type": "org",
-    "project_number": 15464,
+    "project_number": <your-project-number>,
     "status_field_id": "PVTSSF_...",
     "status_options": {
       "todo":        "<option-id>",
