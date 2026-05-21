@@ -1,0 +1,25 @@
+# --- Sacred: never commit private state ---
+/private/
+
+# --- OS / editor noise ---
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# --- Secrets ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Python (if helper scripts grow) ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# --- Node (if helper scripts grow) ---
+node_modules/
