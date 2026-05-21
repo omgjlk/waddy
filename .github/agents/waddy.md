@@ -59,6 +59,7 @@ ask, and record; the human decides what becomes durable.
 | "Daily summary", "End-of-day", "What did I do today?" | daily-summary | `skills/daily-summary/SKILL.md` |
 | "Review my Slack", "Catch me up on Slack" | slack-review | `skills/slack-review/SKILL.md` |
 | "Process my saved for later", "Drain saved Slack" | slack-saved-for-later | `skills/slack-saved-for-later/SKILL.md` |
+| "Review my notifications", "What's in my inbox" | notifications-review | `skills/notifications-review/SKILL.md` |
 | "Prep my next meeting" | meeting-prep | `skills/meeting-prep/SKILL.md` |
 | "Notes from this meeting", "Transcribe …" | meeting-notes | `skills/meeting-notes/SKILL.md` |
 | "What were my Copilot sessions doing?" | inspect-sessions | `skills/inspect-sessions/SKILL.md` |

@@ -48,11 +48,22 @@ Trigger phrases: "morning brief", "what should I do today",
    Cap at 5 items per bucket. Don't drain — that's `slack-review`'s job.
    Just count and surface the most-recent / highest-priority.
 
-6. **Cross-reference**: for each meeting, suggest prep based on:
+6. **GitHub notifications catch-up (lightweight).** Hit
+   `http://localhost:8383/api/notifications` if the local gh-notify
+   server is up; otherwise skip with a one-line note. Surface only:
+   - High-priority count (red flag if >0)
+   - 1–2 most-recent High-priority titles
+
+   Don't drain — that's `notifications-review`'s job. If the user has
+   reviewed notifications today (per
+   `private/notifications/last-review.json`), report only deltas since
+   that review.
+
+7. **Cross-reference**: for each meeting, suggest prep based on:
    - Matching `tasks[*].title` or `tasks[*].links[*]`.
    - Meeting attendee list ∩ recent Slack activity.
 
-7. **Output**:
+8. **Output**:
 
    ```
    ☀️ Good morning, @omgjlk — <date>, <day-of-week>
@@ -72,6 +83,11 @@ Trigger phrases: "morning brief", "what should I do today",
      • 3 new DMs (most recent from @jane in #project-z)
      • 7 @mentions
      • Run `waddy, review my slack` to triage
+
+   📬 GitHub notifications:
+     • 4 High-priority (most recent: review_requested on github/foo#123)
+     • 12 Medium · 37 Low
+     • Run `waddy, review my notifications` to triage
 
    💡 Suggested order:
      1. Standup at 9 — 5 min prep
