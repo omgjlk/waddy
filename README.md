@@ -72,6 +72,12 @@ I shipped this repo publicly so others can fork it, gut the personal bits, and a
 | `docs/` | Setup guides for optional integrations (Google Calendar, etc.) |
 | `private/` *(gitignored)* | All real-work state, raw captures, durable notes |
 
+## Origin
+
+See [`docs/origin.md`](./docs/origin.md) for the verbatim prompt that
+kicked off this project, plus the follow-up that shaped the multi-active
+task model.
+
 ## Inspiration / credit
 
 Built collaboratively with Copilot CLI itself. The design intentionally favors **observability over autopilot** — waddy mostly *proposes* and asks; the human stays in the loop on what gets committed to memory and the board.
