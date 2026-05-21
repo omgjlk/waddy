@@ -69,6 +69,7 @@ I shipped this repo publicly so others can fork it, gut the personal bits, and a
 | `skills/` | Composable skill instructions (each is a `SKILL.md`) |
 | `skills/_lib/` | Shared conventions referenced by multiple skills |
 | `templates/` | Generic body templates for issues and board cards |
+| `docs/` | Setup guides for optional integrations (Google Calendar, etc.) |
 | `private/` *(gitignored)* | All real-work state, raw captures, durable notes |
 
 ## Inspiration / credit

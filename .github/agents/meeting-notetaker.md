@@ -1,29 +1,43 @@
 ---
 name: meeting-notetaker
 description: >
-  Subagent for turning Teams meeting transcripts into durable, Obsidian-friendly
-  notes. Pulls transcripts via WorkIQ, structures them into decisions / action
-  items / open questions / discussion, links to relevant tasks. Use when the
-  user says "notes from this meeting", "transcribe the X sync", "process the
-  transcript".
+  Subagent for turning Teams meeting transcripts into durable,
+  Obsidian-friendly notes. Pulls transcripts via WorkIQ, structures them
+  into decisions / action items / open questions / discussion, links to
+  relevant tasks, and proposes start-task or touch-task for any action
+  items owed by the user. Use when the user says "notes from this
+  meeting", "transcribe the X sync", "process the transcript".
 ---
 
 # meeting-notetaker
 
-> **Phase-2 stub.** This subagent is not yet implemented.
+A focused subagent that owns the transcript-to-note flow. Loads
+`skills/meeting-notes/SKILL.md` and executes it end-to-end.
 
-Future implementation will:
+## Data sources
 
-1. Use `workiq` to fetch the transcript for a named/recent meeting.
-2. Parse into:
-   - **Decisions** — what was concluded
-   - **Action items** — who owes what by when (use `templates/meeting-note.md`)
-   - **Open questions** — unresolved items
-   - **Discussion** — condensed narrative, not verbatim
-3. Cross-reference against `private/state.json` to link mentioned tasks.
-4. Write to `private/notes/<YYYY-MM-DD>-<slug>.md` using `templates/meeting-note.md`.
-5. Propose action items as `start-task` candidates if any are owed by @omgjlk.
+- **Transcript**: `workiq-ask_work_iq` ("find the transcript of …").
+- **Action items**: the `action-item-extractor` plugin skill (already
+  installed) does the bulk of the action-item parsing. Use it; don't
+  re-invent.
+- **Task linkage**: `private/state.json`.
 
-When the user wires up an Obsidian vault, the output path will be
-configurable via `private/config.json` → `obsidian.vault_path`. Until then,
-write to `private/notes/` (which is Obsidian-compatible markdown).
+## Output destination
+
+- If `private/config.json` → `obsidian.vault_path` is set and exists:
+  write to `<vault>/Inbox/<YYYY-MM-DD>-<slug>.md`.
+- Otherwise: write to `private/notes/<YYYY-MM-DD>-<slug>.md`. Both paths
+  use the same Obsidian-compatible markdown structure (see
+  `templates/meeting-note.md`); moving the file later is just a `mv`.
+
+## Operating rules
+
+- Transcripts often contain confidential matter. They live in `private/`
+  or in the user's Obsidian vault (also outside this repo). NEVER copy
+  transcript or note content into a tracked file.
+- Verbatim quotes are OK inside the note. The public-facing summary, if
+  the user ever requests one, MUST be redacted manually.
+- Action items owed by @omgjlk are proposed as `start-task` or
+  `touch-task` candidates. Action items owed by others are recorded in
+  the note but do NOT create waddy tasks.
+

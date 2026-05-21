@@ -39,8 +39,10 @@ snippets, meeting transcripts, real task titles — lives in a gitignored
 - Skills: `skills/<name>/SKILL.md`
 - Shared conventions: `skills/_lib/{board,sanitization,state}.md`
 - Templates: `templates/`
+- Optional integration guides: `docs/`
 - Runtime state (gitignored): `private/state.json`, `private/config.json`,
-  `private/tasks/`, `private/slack/`, `private/meetings/`, `private/notes/`
+  `private/tasks/`, `private/slack/`, `private/meetings/`,
+  `private/notes/`, `private/summaries/`
 
 ## State file schema
 
