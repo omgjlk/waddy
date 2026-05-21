@@ -86,15 +86,40 @@ hard-code an ID in repo files.
   "owner": "<board.owner>",
   "owner_type": "<board.owner_type>",
   "project_number": <board.project_number>,
-  "item_id": <numeric item id from add_project_item response>,
+  "item_id": <numeric item id>,
   "updated_field": {
-    "id": <board.status_field_id as number>,
-    "value": { "single_select_option_id": "<board.status_options.in_progress>" }
+    "id": <board.status_field_database_id as number>,
+    "value": "<board.status_options.in_progress as string>"
   }
 }
 ```
 
-Note: `item_id` for `update_project_item` is a number (the GraphQL
-`databaseId`), while `node_id` is the string `PVTI_...`. The MCP returns
-both — store both in `tasks[<id>].board_item_id` (string) and
-`tasks[<id>].board_item_number` (number).
+Notes:
+
+- `updated_field.id` is the **numeric** field database id
+  (`status_field_database_id` in config), not the `PVTSSF_...` node id.
+- `updated_field.value` for a single-select field is the **bare option id
+  string** (e.g. `"ecccd1b9"`), NOT a wrapped object like
+  `{single_select_option_id: "..."}`. The MCP server rejects the wrapped
+  form with a 422.
+- `item_id` for `update_project_item` is the numeric `databaseId` returned
+  inside the project-item object — **not** the `PVTI_...` `node_id`.
+
+## Getting the numeric item id after `add_project_item`
+
+`add_project_item` only returns the `node_id` (string `PVTI_...`). To get
+the numeric `id` needed for subsequent `update_project_item` calls, follow
+up with a `list_project_items` filtered query:
+
+```
+method:        list_project_items
+owner:         <board.owner>
+owner_type:    <board.owner_type>
+project_number:<board.project_number>
+query:         "repo:<owner>/<repo>"     # or a more specific filter
+fields:        ["<board.status_field_database_id>"]
+```
+
+The response includes `id` (numeric) and `node_id` (string) for each item.
+Cache both in `private/state.json` as `board_item_number` and `board_item_id`
+respectively.
