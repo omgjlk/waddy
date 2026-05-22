@@ -43,6 +43,11 @@ snippets, meeting transcripts, real task titles — lives in a gitignored
 - Runtime state (gitignored): `private/state.json`, `private/config.json`,
   `private/tasks/`, `private/slack/`, `private/meetings/`,
   `private/notes/`, `private/summaries/`
+- Scratch space (gitignored): `private/scratch/` — use this for any
+  ephemeral file work (intermediate jq pipelines, draft outputs,
+  one-off prompts). **Do not write to `/tmp` or other paths outside
+  the repo tree** — keeping scratch under `private/` makes permissions
+  simpler and ensures nothing accidentally leaks into a tracked commit.
 
 ## State file schema
 

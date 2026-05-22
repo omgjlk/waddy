@@ -19,6 +19,11 @@ waddy. The owner's actual work is *not* documented in the committed tree.
 4. **GitHub-side artifacts have no redaction requirement.** Issues, PRs,
    and project items created on `github.com` (under the `github` org) can
    contain real detail — they're not part of this repo's commit history.
+5. **Scratch files belong under `private/scratch/`, not `/tmp`.** Any
+   ephemeral file work — intermediate jq pipelines, draft message
+   bodies, one-off prompts — goes in `private/scratch/`. Keeps
+   permission grants narrow and ensures nothing accidentally leaks
+   outside the gitignored tree.
 
 ## When in doubt
 
