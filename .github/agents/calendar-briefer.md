@@ -25,8 +25,12 @@ one of two skills:
   Requires EULA acceptance — if not yet accepted, halt politely and
   point the user at `workiq-accept_eula`.
 - **Personal calendar (Google)**: optional, gated by
-  `private/config.json` → `google_calendar.enabled`. See
-  `docs/google-calendar-mcp.md` for wiring instructions.
+  `private/config.json` → `google_calendar.enabled`. Tools are
+  read-only via Copilot's MCP tool filter (see
+  `docs/google-calendar-mcp.md`). Available tools:
+  `google-calendar-list-calendars`, `-list-events`, `-get-event`,
+  `-search-events`, `-get-freebusy`, `-get-current-time`,
+  `-list-colors`.
 - **Active/paused tasks**: `private/state.json` (read-only).
 - **Slack signal** (lightweight catch-up only): `slack-mcp` search,
   counts + recent items, never a full review (that's the slack-reviewer's

@@ -29,10 +29,14 @@ Trigger phrases: "morning brief", "what should I do today",
    If `workiq-accept_eula` hasn't been completed, tell the user and stop
    the calendar portion (don't block the rest of the brief).
 
-3. **Personal calendar (deferred).** If `private/config.json` has
-   `google_calendar.enabled = true`, run the Google Cal MCP equivalent
-   (see `docs/google-calendar-mcp.md`). Otherwise note "personal calendar
-   not wired yet" in the output.
+3. **Personal calendar (Google).** If `private/config.json` has
+   `google_calendar.enabled = true`, call
+   `google-calendar-list-events` for the configured `calendar_id`
+   (default `primary`) over today's range. Merge with the Outlook
+   results and flag any time overlaps or back-to-backs as conflicts.
+   Personal events surface **subject only** in shared output —
+   privacy-by-default. If the MCP isn't loaded or the call errors,
+   note "personal calendar unavailable" and continue.
 
 4. **Yesterday's incomplete work.** From `state.json`:
    - All `active_tasks` and `paused_tasks` (these are what's open).

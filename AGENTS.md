@@ -27,7 +27,7 @@ snippets, meeting transcripts, real task titles — lives in a gitignored
    - GitHub (issues, PRs, projects, repos) → `github-mcp-server`
    - Slack (channels, DMs, threads, saved-for-later) → `slack-mcp`
    - Outlook / Teams / Office / Word docs → `workiq`
-   - Personal Google Calendar → (deferred)
+   - Personal Google Calendar → `google-calendar` MCP (read-only via tool filter)
 6. **Propose, don't autopilot.** For anything that writes to a public surface
    (issues, PRs, board items, Slack), confirm with the user the first time
    in a session unless they've explicitly said "just do it".
