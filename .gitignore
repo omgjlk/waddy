@@ -8,6 +8,9 @@
 *.swp
 *~
 
+# --- Workspace-local MCP config (contains local credential paths) ---
+.mcp.json
+
 # --- Secrets ---
 .env
 .env.*

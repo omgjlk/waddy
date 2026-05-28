@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "google-calendar": {
+      "type": "local",
+      "command": "npx",
+      "args": ["-y", "@cocal/google-calendar-mcp"],
+      "env": {
+        "GOOGLE_OAUTH_CREDENTIALS": "/Users/REPLACE_ME/.config/google-calendar-mcp/credentials.json"
+      },
+      "tools": [
+        "list-calendars",
+        "list-events",
+        "get-event",
+        "search-events",
+        "get-freebusy",
+        "get-current-time",
+        "list-colors"
+      ]
+    }
+  }
+}

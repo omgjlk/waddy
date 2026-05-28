@@ -11,8 +11,9 @@ The upstream server hard-codes the broad
 `https://www.googleapis.com/auth/calendar` OAuth scope (read + write +
 delete) and does not expose a way to narrow it via environment variable.
 Rather than fork-and-patch, waddy enforces read-only at the **MCP tool
-filter** layer in `~/.copilot/mcp-config.json`: the agent literally
-cannot invoke `create-event`, `update-event`, `delete-event`,
+filter** layer in the Copilot CLI MCP config (`.mcp.json` at the repo
+root, or `~/.copilot/mcp-config.json`): the agent literally cannot
+invoke `create-event`, `update-event`, `delete-event`,
 `respond-to-event`, or `manage-accounts`, even though Google issued a
 broadly-scoped token.
 
@@ -39,7 +40,13 @@ build instead of `npx`. Not required for the default waddy workflow.
    chmod 600 ~/.config/google-calendar-mcp/credentials.json
    ```
 
-5. **Add to `~/.copilot/mcp-config.json`:**
+5. **Add to a Copilot CLI MCP config.** Two options:
+
+   **Option A — Workspace-scoped (recommended for waddy).** The MCP
+   server only loads when Copilot CLI's cwd is this repo. Avoids
+   spawning the npx subprocess for every Copilot session everywhere
+   on your machine. Create `.mcp.json` at the waddy repo root (already
+   gitignored):
 
    ```json
    {
@@ -65,8 +72,16 @@ build instead of `npx`. Not required for the default waddy workflow.
    }
    ```
 
-   The `tools` array is the read-only allowlist. Do not add the write
-   tools unless you know what you're doing.
+   See `.mcp.json.example` at the repo root for a copy-paste template.
+
+   **Option B — User-global.** Same JSON shape, placed in
+   `~/.copilot/mcp-config.json` (merged into the existing `mcpServers`
+   object). The server then loads for every Copilot CLI session,
+   regardless of cwd. Use this only if you want personal-calendar
+   reads from outside the waddy repo.
+
+   Either way, the `tools` array is the read-only allowlist. Do not
+   add the write tools unless you know what you're doing.
 
 6. **Trigger first-run OAuth consent** from the terminal:
 
