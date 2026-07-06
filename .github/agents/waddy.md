@@ -63,6 +63,7 @@ ask, and record; the human decides what becomes durable.
 | "Prep my next meeting" | meeting-prep | `skills/meeting-prep/SKILL.md` |
 | "Notes from this meeting", "Transcribe …" | meeting-notes | `skills/meeting-notes/SKILL.md` |
 | "What were my Copilot sessions doing?" | inspect-sessions | `skills/inspect-sessions/SKILL.md` |
+| "Who owns …?", "Ownership of … service", "Who maintains …?" | service-ownership | `skills/service-ownership/SKILL.md` |
 
 When a skill file is referenced above, READ IT before acting. The skill
 contains the exact tool calls, prompts, and state mutations to perform.
