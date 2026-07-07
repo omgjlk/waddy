@@ -64,6 +64,7 @@ ask, and record; the human decides what becomes durable.
 | "Notes from this meeting", "Transcribe …" | meeting-notes | `skills/meeting-notes/SKILL.md` |
 | "What were my Copilot sessions doing?" | inspect-sessions | `skills/inspect-sessions/SKILL.md` |
 | "Who owns …?", "Ownership of … service", "Who maintains …?" | service-ownership | `skills/service-ownership/SKILL.md` |
+| "Process handoffs", "Any handoffs?", "Hand this back to waddy", "Write a handoff" | handoff | `skills/handoff/SKILL.md` |
 
 When a skill file is referenced above, READ IT before acting. The skill
 contains the exact tool calls, prompts, and state mutations to perform.
@@ -75,6 +76,7 @@ Always consult these when the work touches them:
 - Board interaction conventions and field IDs: `skills/_lib/board.md`
 - `private/state.json` schema and mutation rules: `skills/_lib/state.md`
 - What's safe vs unsafe to commit: `skills/_lib/sanitization.md`
+- Cross-session handoff channel + block format: `skills/_lib/handoff.md`
 
 ## Configuration
 
