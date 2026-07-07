@@ -1,5 +1,9 @@
 # Work request: {{title}}
 
+<!-- waddy-task: {{task_id}} -->
+_(Leave the `waddy-task:` line above intact — it lets the tracking agent bind
+this session to the task automatically.)_
+
 You're picking up a unit of work handed off from another session. This briefing
 is self-contained — you don't need any tools or context from the handing-off
 agent to do the work or to report back.

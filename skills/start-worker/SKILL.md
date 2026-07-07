@@ -54,7 +54,10 @@ and closes later (via `handoff` + the session ledger).
 5. **Render the briefing.** Fill `templates/worker-brief.md` with the inputs.
    The template already inlines the literal Handoff block and the notes path —
    keep it self-contained; do not replace inlined content with references to
-   waddy internals.
+   waddy internals. Keep the `<!-- waddy-task: <id> -->` marker near the top:
+   when the user pastes the brief as the worker's first prompt, the
+   `userPromptSubmitted` ledger hook records a **claim** entry binding that
+   session to the task, at pickup time (survives a crash before any handoff).
 
 6. **Deliver.**
    - Copy the rendered briefing to the clipboard (`pbcopy`).

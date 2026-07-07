@@ -67,9 +67,17 @@ Field rules:
 ## Optional: session ledger (deterministic, via hooks)
 
 Handoff blocks are model-written (judgment). For the *mechanical* problem of
-"which session touched what, when", a user-level **hook** can append a lossless
-ledger entry at `sessionStart`/`sessionEnd` — `{session_id, event, cwd, repo,
-branch, ts}` — to a JSONL file. waddy can join that ledger against tasks by
-cwd/repo/time to correlate worker sessions without depending on session-store
-compaction. The ledger complements handoffs; it does not replace them (it has no
-notion of task intent or outcome).
+"which session touched what, when", a user-level **hook** appends lossless ledger
+entries to a JSONL file (`private/session-ledger.jsonl`), independent of
+session-store compaction:
+
+- `sessionStart` / `sessionEnd` → `{event, session_id, cwd, repo, branch, ts}`.
+- `userPromptSubmitted` → a **claim** entry `{event: "claim", task_id,
+  session_id, cwd, repo, ts}` **only when** the prompt contains a
+  `waddy-task:<id>` marker (as emitted by a `start-worker` brief). This binds
+  task↔session **at pickup time — before any work — so it survives an interrupt
+  or crash** even if the worker never writes a Handoff block.
+
+To find which session picked up a task: grep the ledger for `"task_id": "<id>"`.
+The ledger complements handoffs; it does not replace them (it has no notion of
+task intent or outcome).
