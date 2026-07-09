@@ -27,7 +27,18 @@ Optional task identifier. If omitted, defaults to `focus`.
    `tasks[<task-id>].outcome` and append a `{via: "manual", note: "<outcome>"}`
    touch.
 4. Update the board:
-   - `update_project_item` setting `Status` → `board.status_options.done`.
+   - **If the card is backed by an issue or PR: do NOT set Status → Done.**
+     The board's "Item closed → Done" / "PR merged → Done" workflow owns that
+     transition (see `_lib/board.md`, "Automation owns the Done column").
+     Instead ask:
+     > "Should I close the backing issue/PR now? (that's what moves the card to
+     > Done)"
+     Only close on explicit confirmation — completing a waddy task is not
+     automatically the same as closing the GitHub artifact.
+   - **If the card is a draft** (no backing issue/PR): set `Status` →
+     `board.status_options.done` via `update_project_item` (drafts have nothing
+     to close, so automation can't move them).
+   - **If the task is `private`** (no board card): nothing to do here.
 5. Mutate state.json:
    - Remove from `active_tasks` AND `paused_tasks`.
    - `tasks[<task-id>].status = "done"`

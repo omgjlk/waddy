@@ -144,3 +144,96 @@ fields:        ["<board.status_field_database_id>"]
 The response includes `id` (numeric) and `node_id` (string) for each item.
 Cache both in `private/state.json` as `board_item_number` and `board_item_id`
 respectively.
+
+## Status map (waddy status → board Status option)
+
+The board's Status single-select has four options (ids in `config.json →
+board.status_options`). Map waddy task `status` values onto them:
+
+| waddy `status` | board Status | option key |
+| --- | --- | --- |
+| (just added, not started) | To do | `todo` |
+| `in_progress`, `active`, `root-caused`, `handed-off`, `waiting_review` | In progress | `in_progress` |
+| `paused` | Paused | `paused` |
+| `done` | Done | `done` |
+
+"In progress" is the catch-all for *any* live work — investigations, reviews,
+handed-off items awaiting a worker, etc. Only use Paused for genuinely
+set-aside work, and Done for closed-out work.
+
+## Visibility: what belongs on the board
+
+Each task carries a `visibility` field (`public` | `private`). **Only `public`
+tasks are projected to the WAIDH board** — it's a shared surface others read.
+
+Default heuristic when `start-task` doesn't get an explicit value:
+- **`public`** — has a GitHub artifact (`issue`/`pr`), or `kind` is
+  `incident`/`initiative`/`epic`/`outreach`/`pitch`/`adr`/`pr-review`, or the
+  work produces something others consume (docs, presentations).
+- **`private`** — personal tooling (e.g. waddy/Obsidian), one-off triage/routing,
+  private investigations, access recovery, reading/prep tasks.
+
+When unsure, ask the user once at `start-task`. Never move a `private` task onto
+the board.
+
+## Automation owns the "Done" column — do NOT hand-move issue/PR cards to Done
+
+**Status: workflows CONFIRMED ENABLED on board 15464 as of 2026-07-09** — the
+"Item closed → Done" and "PR merged → Done" workflows are live, so closing/merging
+the backing artifact moves its card to Done automatically.
+
+Enable GitHub Projects' built-in **Workflows** on the board (Project → ··· →
+Settings → Workflows) so closure is handled by GitHub, not by waddy:
+
+1. **Item closed → Set Status: Done**
+2. **Pull request merged → Set Status: Done**
+3. (optional) **Auto-archive items** after N days in Done, to keep the open
+   views clean.
+
+Consequences for skills:
+- `complete-task` **must not** set Status→Done for a card that has a backing
+  **issue or PR** — closing the artifact will trigger the workflow. Setting it
+  manually races the automation and hides the real closure signal. Just update
+  state and let GitHub move the column when the artifact closes.
+- **Drafts have nothing to close**, so `complete-task` *does* set drafts to Done
+  manually (see below).
+
+## Prefer a real tracking issue over a draft
+
+A draft card can't participate in the "closed → Done" automation and has no
+permalink for others. So whenever `public` work *could* have an issue:
+- **Preferred:** create/there-exists a tracking issue (in `tracking_repo` or the
+  relevant repo) and add **that** to the board.
+- **Draft only** when the work legitimately has no home issue (e.g. a Slack-only
+  incident being handed to another team) — and expect to move it to Done by hand.
+
+When a draft later gains a real artifact, **swap** it (add the issue/PR, copy any
+status, delete the draft) rather than leaving a duplicate.
+
+## Lifecycle side-effects (board writes happen as a side-effect of the waddy verbs)
+
+| waddy verb | board effect |
+| --- | --- |
+| `start-task` (visibility `public`) | ensure a card exists (issue/PR preferred, else draft) → Status **In progress** (start-task = actively starting); store `board_item_id` (+ `board_item_number`) and `issue`/`pr` on the task |
+| `start-task` (visibility `private`) | no board write |
+| reconcile / triage-add (not being worked yet) | add card → Status **To do** |
+| `switch-to` (focus target on board, currently **To do**) | promote that one card **To do → In progress**; no other board change |
+| `pause-task` | set card **Paused** |
+| `resume-task` | set card **In progress** |
+| `complete-task`, card backed by issue/PR | **no board write** — close the artifact; the workflow moves it to Done |
+| `complete-task`, draft card | set card **Done** manually |
+
+## Reconcile (`sync-waidh`) — run at morning-brief / daily-summary
+
+A periodic drift check (this is the audit codified). For each `public` task,
+ensure it's on the board with the mapped status and, if it has an artifact, that
+the **artifact** (not a stale draft) is the card. Then surface, without
+auto-fixing destructive things:
+- assigned open issues (in relevant repos) **not** on the board → triage inbox;
+- board items whose backing issue/PR is closed but card isn't Done (automation
+  gap / draft) ;
+- status mismatches between state.json and the board (e.g. waddy `done` but card
+  still In progress);
+- Done drafts that now have a real artifact to swap.
+Board items with **no** waddy task are fine — GitHub is the source of truth for
+those; don't force-create waddy tasks for them.

@@ -19,7 +19,8 @@ now and recently?". It lives at `private/state.json`. It is gitignored.
       "started_at": "<ISO-8601>",
       "last_touched_at": "<ISO-8601>",
       "status": "in_progress | paused | done",
-      "kind": "issue | pr-review | doc-review | investigation | meeting-followup | slack-thread | other",
+      "kind": "issue | pr-review | doc-review | investigation | incident | initiative | epic | outreach | pitch | adr | meeting-followup | slack-thread | other",
+      "visibility": "public | private",
       "board_item_id": "PVTI_...",
       "board_item_number": 1234567890,
       "issue": "owner/repo#NN or null",
@@ -51,6 +52,14 @@ now and recently?". It lives at `private/state.json`. It is gitignored.
    are). Most-recent first.
 5. **`touches` is append-only within a session.** It is the audit trail for
    the daily-summary skill.
+6. **`visibility` gates board projection.** Only `public` tasks appear on the
+   WAIDH board (see `board.md`). `private` tasks (personal tooling, one-off
+   triage, private investigations, access recovery, reading/prep) never get a
+   board card. When `visibility` is absent, treat as `public` iff the task has
+   an `issue`/`pr` or a board-worthy `kind`; otherwise ask the user.
+7. **`board_item_id` is the cached board-card node id.** Set it when a card is
+   created for the task so status updates are a single deterministic call (no
+   re-searching the board). `null`/absent means "not on the board".
 
 ## Task IDs
 

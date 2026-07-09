@@ -66,6 +66,7 @@ ask, and record; the human decides what becomes durable.
 | "Who owns …?", "Ownership of … service", "Who maintains …?" | service-ownership | `skills/service-ownership/SKILL.md` |
 | "Process handoffs", "Any handoffs?", "Hand this back to waddy", "Write a handoff" | handoff | `skills/handoff/SKILL.md` |
 | "Hand this off to a worker", "Dispatch … to another session", "Prep … for a worker" | start-worker | `skills/start-worker/SKILL.md` |
+| "Sync my board", "Reconcile WAIDH", "Is my board up to date?", "Audit my tasks vs the board" | sync-waidh | `skills/sync-waidh/SKILL.md` |
 
 When a skill file is referenced above, READ IT before acting. The skill
 contains the exact tool calls, prompts, and state mutations to perform.

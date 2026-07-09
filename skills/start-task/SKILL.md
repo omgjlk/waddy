@@ -43,7 +43,19 @@ A free-form blob from the user. May include:
    - Generate `task-id` = `YYYY-MM-DD-<slug>` (today's date, kebab-case slug
      from title, 2–4 words). If collision, suffix `-2`, `-3`.
 
-3. **Determine backing artifact.** In order:
+3. **Determine visibility.** Set `visibility` (`public` | `private`) using the
+   heuristic in `_lib/board.md` ("Visibility: what belongs on the board"):
+   - `public` if the task has an issue/PR or a board-worthy `kind`
+     (incident/initiative/epic/outreach/pitch/adr/pr-review) or produces
+     something others consume (docs, presentations).
+   - `private` for personal tooling, one-off triage/routing, private
+     investigations, access recovery, reading/prep.
+   - If genuinely ambiguous, ask the user once.
+   **If `private`: skip steps 4–7 (no tracking issue, no board writes).** Still
+   create the task in state (step 8) and the notes file (step 9), with
+   `visibility: "private"` and `status: "in_progress"`.
+
+4. **Determine backing artifact** (public tasks only). In order:
    a. If the dump contains an issue URL or `#owner/repo#NN`: use that issue.
    b. Else if it contains a PR URL: use that PR (kind = `pr-review`).
    c. Else: ask:
@@ -53,10 +65,12 @@ A free-form blob from the user. May include:
       > backing issue, or (3) just track this internally without a board
       > entry?"
 
-      Default recommendation: (1) create a tracking issue. Draft items are
-      possible but less linkable.
+      Default recommendation: (1) create a tracking issue — a real issue
+      participates in the "closed → Done" board automation and gives others a
+      permalink; drafts do neither (see `_lib/board.md`, "Prefer a real
+      tracking issue over a draft").
 
-4. **Create the tracking issue (if path 3a).**
+5. **Create the tracking issue (if path 4a→create).**
    - Use `github-mcp-server` `create_issue` on `<tracking_repo>` from
      `private/config.json`.
    - Title = task title.
@@ -64,24 +78,22 @@ A free-form blob from the user. May include:
      date, and a "Tracked by waddy" footer.
    - Capture the issue number.
 
-5. **Add to the board.**
+6. **Add to the board** (public tasks only).
    - For issue/PR-backed tasks: `projects_write` method `add_project_item`
      with `item_type` = "issue"|"pull_request" and the appropriate
      `issue_number`|`pull_request_number`, `item_owner`, `item_repo` from
      parsed URL or `tracking_repo`.
    - Capture the returned item `id` (numeric) and `node_id` (string).
-   - For draft items (path 3b): use the GraphQL fallback documented in
+   - For draft items (path 4b): use the GraphQL fallback documented in
      `_lib/board.md`.
-
-6. **Set status to "In progress".**
-   - `projects_write` method `update_project_item`:
+   - Then set status to "In progress":
      ```
-     updated_field: { id: <board.status_field_id>, value: { single_select_option_id: <board.status_options.in_progress> } }
+     update_project_item, updated_field: { id: <board.status_field_id>, value: { single_select_option_id: <board.status_options.in_progress> } }
      ```
 
 7. **Mutate `private/state.json`.**
    - Add a `tasks["<task-id>"]` entry per the schema in `_lib/state.md`:
-     `status: "in_progress"`, `started_at` & `last_touched_at` = now,
+     `status: "in_progress"`, `visibility`, `started_at` & `last_touched_at` = now,
      `kind`, `links`, `board_item_id`, `board_item_number`, `issue`/`pr`
      fields, `touches: [{at: now, via: "start"}]`,
      `internal_notes_path: "private/tasks/<task-id>/notes.md"`.

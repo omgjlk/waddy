@@ -43,6 +43,12 @@ Trigger phrases: "morning brief", "what should I do today",
    - Anything `tasks[*].last_touched_at` within the last 24h whose status
      isn't `done`.
 
+4b. **WAIDH drift check (lightweight).** Invoke `sync-waidh` (see
+   `skills/sync-waidh/SKILL.md`): project any un-carded `public` tasks, align
+   statuses, and surface (don't auto-act on) assigned issues not on the board,
+   closed-but-not-Done cards, and status mismatches. Fold the surfaced counts
+   into the brief so the board stays honest day to day.
+
 5. **Slack catch-up (lightweight).** Use `slack_search_public_and_private`
    to look for:
    - DMs since the user's last activity in Slack (best-effort: use
