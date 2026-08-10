@@ -44,6 +44,8 @@ one of two skills:
   shared/public outputs — privacy-by-default.
 - Briefs are short. 30 seconds to read. If you find yourself writing
   more than ~15 lines, compress.
-- Cache prep docs under `private/meetings/<date>-<slug>-prep.md`;
-  never commit them.
+- Cache prep docs in the Obsidian vault at
+  `<vault_path>/meetings/<date>-<slug>-prep.md` (single source of truth,
+  no `private/meetings/` duplicate); fall back to `private/meetings/`
+  only when no vault is configured. Never commit them.
 

@@ -67,9 +67,12 @@ Optional meeting identifier:
      • <…>
    ```
 
-6. **Cache the brief.** Save to
-   `private/meetings/<YYYY-MM-DD>-<slug>-prep.md` so it's available
-   during the meeting and for later reference.
+6. **Cache the brief.** Save to the Obsidian vault at
+   `<vault_path>/meetings/<YYYY-MM-DD>-<slug>-prep.md` (read
+   `obsidian.vault_path` from `private/config.json`) so it's available
+   during the meeting and for later reference. The vault is the single
+   source of truth — do not also write a `private/meetings/` copy. Only
+   fall back to `private/meetings/` when no Obsidian vault is configured.
 
 7. **Offer to start a task.** Ask:
 

@@ -5,8 +5,8 @@ description: >
   Obsidian-friendly markdown note. Structures into Decisions, Action
   items (with owners + dates), Open questions, and condensed Discussion.
   Links action items to existing tasks or proposes start-task for new
-  ones. Writes to `private/notes/` (Obsidian stub) until the user wires
-  up an Obsidian vault path.
+  ones. Writes to the Obsidian vault (`<vault>/meetings/`) when a vault
+  is configured; falls back to `private/notes/` only if none is.
 ---
 
 # meeting-notes
@@ -67,12 +67,14 @@ Meeting identifier:
 6. **Write to disk:**
 
    - If `private/config.json` has `obsidian.vault_path` set and the
-     directory exists: write to `<vault>/Inbox/<YYYY-MM-DD>-<slug>.md`.
-   - Otherwise (current default): write to
+     directory exists (current default for this user): write to
+     `<vault>/meetings/<YYYY-MM-DD>-<slug>.md`. The vault is the single
+     source of truth — one copy, no `private/` duplicate.
+   - Only if **no** vault is configured: fall back to
      `private/notes/<YYYY-MM-DD>-<slug>.md`.
 
-   The path is the same Obsidian-compatible markdown either way — moving
-   the file later is just `mv`.
+   Either way it's Obsidian-compatible markdown. Record the written path
+   in the linked task's `links[]`.
 
 7. **Reply:**
 

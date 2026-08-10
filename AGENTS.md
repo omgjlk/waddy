@@ -41,8 +41,12 @@ snippets, meeting transcripts, real task titles — lives in a gitignored
 - Templates: `templates/`
 - Optional integration guides: `docs/`
 - Runtime state (gitignored): `private/state.json`, `private/config.json`,
-  `private/tasks/`, `private/slack/`, `private/meetings/`,
+  `private/tasks/`, `private/slack/`,
   `private/notes/`, `private/summaries/`
+- Meeting notes & prep docs: the **Obsidian vault** (`obsidian.vault_path`
+  in `private/config.json`, under `meetings/`) is the single source of
+  truth — one copy, no duplicates. `private/meetings/` is only a fallback
+  when no vault is configured.
 - Scratch space (gitignored): `private/scratch/` — use this for any
   ephemeral file work (intermediate jq pipelines, draft outputs,
   one-off prompts). **Do not write to `/tmp` or other paths outside

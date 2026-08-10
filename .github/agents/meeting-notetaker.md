@@ -24,11 +24,13 @@ A focused subagent that owns the transcript-to-note flow. Loads
 
 ## Output destination
 
-- If `private/config.json` → `obsidian.vault_path` is set and exists:
-  write to `<vault>/Inbox/<YYYY-MM-DD>-<slug>.md`.
-- Otherwise: write to `private/notes/<YYYY-MM-DD>-<slug>.md`. Both paths
-  use the same Obsidian-compatible markdown structure (see
-  `templates/meeting-note.md`); moving the file later is just a `mv`.
+- If `private/config.json` → `obsidian.vault_path` is set and exists
+  (current default): write to `<vault>/meetings/<YYYY-MM-DD>-<slug>.md`.
+  The vault is the single source of truth — one copy, no `private/`
+  duplicate.
+- Only if no vault is configured: write to
+  `private/notes/<YYYY-MM-DD>-<slug>.md`. Both paths use the same
+  Obsidian-compatible markdown structure (see `templates/meeting-note.md`).
 
 ## Operating rules
 
