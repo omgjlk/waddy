@@ -5,22 +5,32 @@ personal calendar conflict checks, the
 [`@cocal/google-calendar-mcp`](https://github.com/nspady/google-calendar-mcp)
 server is used.
 
-## Read-only design
+## Least-privilege design
 
 The upstream server hard-codes the broad
 `https://www.googleapis.com/auth/calendar` OAuth scope (read + write +
 delete) and does not expose a way to narrow it via environment variable.
-Rather than fork-and-patch, waddy enforces read-only at the **MCP tool
-filter** layer in the Copilot CLI MCP config (`.mcp.json` at the repo
-root, or `~/.copilot/mcp-config.json`): the agent literally cannot
-invoke `create-event`, `update-event`, `delete-event`,
-`respond-to-event`, or `manage-accounts`, even though Google issued a
-broadly-scoped token.
+Rather than fork-and-patch, waddy constrains what the agent can actually
+do at the **MCP tool filter** layer in the Copilot CLI MCP config
+(`.mcp.json` at the repo root, or `~/.copilot/mcp-config.json`). The
+token Google issued is broadly scoped; the allowlist is what limits it.
+
+**Currently permitted:** all read tools, plus `create-event` and
+`update-event`.
+
+**Deliberately withheld:** `delete-event`, `respond-to-event`, and
+`manage-accounts` — the agent literally cannot invoke them.
+
+The reasoning: `create-event` without `update-event` is a trap, because
+the agent could create a wrong event and be unable to correct it. But a
+bad **delete** on a personal calendar is not recoverable agent-side, and
+RSVPs are visible to other people, so both stay off. `manage-accounts`
+is not needed for any waddy workflow.
 
 If you want a true read-only token (defense in depth at Google's API),
 clone the upstream repo, change the scope in `build/auth-server.js` to
 `.../auth/calendar.readonly`, and point the MCP command at your local
-build instead of `npx`. Not required for the default waddy workflow.
+build instead of `npx`. Note this forecloses event creation entirely.
 
 ## Setup steps
 
@@ -80,8 +90,12 @@ build instead of `npx`. Not required for the default waddy workflow.
    regardless of cwd. Use this only if you want personal-calendar
    reads from outside the waddy repo.
 
-   Either way, the `tools` array is the read-only allowlist. Do not
-   add the write tools unless you know what you're doing.
+   Either way, the `tools` array is the allowlist that bounds what the
+   agent can do. It currently permits the read tools plus
+   `create-event` and `update-event`. Adding `delete-event`,
+   `respond-to-event`, or `manage-accounts` grants irreversible or
+   externally-visible actions on a personal calendar — do not add them
+   unless you know what you're doing.
 
 6. **Trigger first-run OAuth consent** from the terminal:
 
@@ -125,8 +139,10 @@ scope.
 
 ## What waddy does NOT do
 
-- Write to Google Calendar (no event creation/edits/deletes/RSVPs) —
-  enforced via the MCP tool filter.
+- Delete Google Calendar events, RSVP to invitations, or manage
+  accounts — `delete-event`, `respond-to-event`, and `manage-accounts`
+  are withheld via the MCP tool filter. Event **creation** and
+  **edits** are permitted.
 - Cache calendar data in tracked files.
 - Read calendar contents older than the current day's lookback window
   unless you ask.
