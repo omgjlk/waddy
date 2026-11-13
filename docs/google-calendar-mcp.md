@@ -30,19 +30,36 @@ is not needed for any waddy workflow.
 If you want a true read-only token (defense in depth at Google's API),
 clone the upstream repo, change the scope in `build/auth-server.js` to
 `.../auth/calendar.readonly`, and point the MCP command at your local
-build instead of `npx`. Note this forecloses event creation entirely.
+build instead of the installed package. Note this forecloses event creation entirely.
 
 ## Setup steps
 
-1. **Create a Google Cloud project** and enable the Calendar API:
+1. **Install the server once, at a pinned version.** Install it into a
+   fixed directory instead of launching it with `npx`. With `npx`, every
+   Copilot session start can hit the registry, and `@latest` silently
+   changes what runs. Check `npm view @cocal/google-calendar-mcp time`
+   for the newest stable release.
+
+   ```bash
+   npm install --prefix ~/.local/share/mcp/google-calendar-mcp \
+     --ignore-scripts --save-exact @cocal/google-calendar-mcp@<version>
+   ```
+
+   If your network requires a private package feed, run the install
+   through that feed's tooling, for example
+   [`gh-cfs`](https://github.com/github/gh-cfs) inside GitHub:
+   `gh cfs -- npm install …`. To upgrade, rerun the install with a newer
+   version.
+
+2. **Create a Google Cloud project** and enable the Calendar API:
    https://console.cloud.google.com/apis/library/calendar-json.googleapis.com.
-2. **Configure the OAuth consent screen.** If your account is a Google
+3. **Configure the OAuth consent screen.** If your account is a Google
    Workspace account, choose **Internal** — no test-user dance and no
    weekly token expiration. Plain `@gmail.com` accounts must use
    **External** + add themselves as a test user.
-3. **Generate an OAuth client** (Application type: **Desktop app**) and
+4. **Generate an OAuth client** (Application type: **Desktop app**) and
    download the JSON.
-4. **Store it outside the repo:**
+5. **Store it outside the repo:**
 
    ```bash
    mkdir -p ~/.config/google-calendar-mcp
@@ -50,11 +67,11 @@ build instead of `npx`. Note this forecloses event creation entirely.
    chmod 600 ~/.config/google-calendar-mcp/credentials.json
    ```
 
-5. **Add to a Copilot CLI MCP config.** Two options:
+6. **Add to a Copilot CLI MCP config.** Two options:
 
    **Option A — Workspace-scoped (recommended for waddy).** The MCP
    server only loads when Copilot CLI's cwd is this repo. Avoids
-   spawning the npx subprocess for every Copilot session everywhere
+   starting the server for every Copilot session everywhere
    on your machine. Create `.mcp.json` at the waddy repo root (already
    gitignored):
 
@@ -63,8 +80,8 @@ build instead of `npx`. Note this forecloses event creation entirely.
      "mcpServers": {
        "google-calendar": {
          "type": "local",
-         "command": "npx",
-         "args": ["-y", "@cocal/google-calendar-mcp"],
+         "command": "/Users/<you>/.local/share/mcp/google-calendar-mcp/node_modules/.bin/google-calendar-mcp",
+         "args": [],
          "env": {
            "GOOGLE_OAUTH_CREDENTIALS": "/Users/<you>/.config/google-calendar-mcp/credentials.json"
          },
@@ -97,11 +114,11 @@ build instead of `npx`. Note this forecloses event creation entirely.
    externally-visible actions on a personal calendar — do not add them
    unless you know what you're doing.
 
-6. **Trigger first-run OAuth consent** from the terminal:
+7. **Trigger first-run OAuth consent** from the terminal:
 
    ```bash
    GOOGLE_OAUTH_CREDENTIALS=~/.config/google-calendar-mcp/credentials.json \
-     npx -y @cocal/google-calendar-mcp auth
+     ~/.local/share/mcp/google-calendar-mcp/node_modules/.bin/google-calendar-mcp auth
    ```
 
    A browser tab opens; approve. The refresh token is saved to
@@ -111,7 +128,7 @@ build instead of `npx`. Note this forecloses event creation entirely.
    chmod 600 ~/.config/google-calendar-mcp/tokens.json
    ```
 
-7. **Flip the waddy config flag.** In `private/config.json`:
+8. **Flip the waddy config flag.** In `private/config.json`:
 
    ```json
    "google_calendar": {
@@ -121,7 +138,7 @@ build instead of `npx`. Note this forecloses event creation entirely.
    }
    ```
 
-8. **Smoke test.** Ask the agent "list my Google calendars" — it should
+9. **Smoke test.** Ask the agent "list my Google calendars" — it should
    return the calendar list.
 
 ## Once wired
@@ -151,7 +168,7 @@ scope.
 
 - **Workspace Internal app**: tokens refresh indefinitely.
 - **External app in test mode**: tokens expire after 7 days. Re-run the
-  `auth` command from step 6 to refresh, or publish the app (Cloud
+  `auth` command from step 7 to refresh, or publish the app (Cloud
   Console → OAuth consent screen → **Publish**) to eliminate the
   expiry. Google will warn that the app is unverified — that's fine for
   personal use.

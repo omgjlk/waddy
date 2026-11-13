@@ -2,8 +2,8 @@
   "mcpServers": {
     "google-calendar": {
       "type": "local",
-      "command": "npx",
-      "args": ["-y", "@cocal/google-calendar-mcp"],
+      "command": "/Users/REPLACE_ME/.local/share/mcp/google-calendar-mcp/node_modules/.bin/google-calendar-mcp",
+      "args": [],
       "env": {
         "GOOGLE_OAUTH_CREDENTIALS": "/Users/REPLACE_ME/.config/google-calendar-mcp/credentials.json"
       },
