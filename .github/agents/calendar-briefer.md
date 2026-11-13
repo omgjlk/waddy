@@ -21,9 +21,9 @@ one of two skills:
 
 ## Data sources
 
-- **Work calendar / email**: `workiq` MCP via `workiq-ask_work_iq`.
-  Requires EULA acceptance — if not yet accepted, halt politely and
-  point the user at `workiq-accept_eula`.
+- **Work calendar / email**: Work IQ `ask` and `fetch` (connector or
+  `workiq` server; see `skills/_lib/mcp-tools.md`). If Work IQ is
+  unavailable, say so and continue without it.
 - **Personal calendar (Google)**: optional, gated by
   `private/config.json` → `google_calendar.enabled`. Tools are
   read-only via Copilot's MCP tool filter (see
@@ -32,7 +32,7 @@ one of two skills:
   `-search-events`, `-get-freebusy`, `-get-current-time`,
   `-list-colors`.
 - **Active/paused tasks**: `private/state.json` (read-only).
-- **Slack signal** (lightweight catch-up only): `slack-mcp` search,
+- **Slack signal** (lightweight catch-up only, read-only): Slack search,
   counts + recent items, never a full review (that's the slack-reviewer's
   job).
 

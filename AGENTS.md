@@ -22,13 +22,20 @@ snippets, meeting transcripts, real task titles — lives in a gitignored
    embarrass the owner if it were on the front page of Hacker News.
 3. **Never auto-pause a task on `start-task`.** The user multitasks. Multiple
    "In progress" board items at once is normal.
-4. **Never mark Slack messages as read.** Use read-only Slack MCP methods only.
+4. **Never mark Slack messages as read, and ask before every Slack write.**
+   Reads are free. Each write (message, reaction, canvas, list) needs the
+   user's explicit approval of the exact draft, every time. Earlier
+   autopilot permission doesn't cover it. See `skills/_lib/mcp-tools.md`.
 5. **Use the right MCP for the job:**
    - GitHub (issues, PRs, projects, repos) → `github-mcp-server`
-   - Slack (channels, DMs, threads, saved-for-later) → `slack-mcp`
-   - Outlook / Teams / Office / Word docs → `workiq`
+   - Slack (channels, DMs, threads, saved-for-later) → Slack connector,
+     or the `slack-mcp` server if the connector isn't connected
+   - Outlook / Teams / Office / Word docs → Work IQ connector, or the
+     `workiq` server if the connector isn't connected
    - Personal Google Calendar → `google-calendar` MCP (reads plus
      `create-event`/`update-event`; deletes and RSVPs withheld via tool filter)
+
+   Resolve Slack and Work IQ tool names per `skills/_lib/mcp-tools.md`.
 6. **Propose, don't autopilot.** For anything that writes to a public surface
    (issues, PRs, board items, Slack), confirm with the user the first time
    in a session unless they've explicitly said "just do it".

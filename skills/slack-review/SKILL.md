@@ -34,7 +34,8 @@ Optional `since` argument:
    titles and links), `private/config.json` (for user info), and the
    `last-review.json` (or use the override from input).
 
-2. **Pull three buckets in parallel** via `slack-mcp` tools. The current
+2. **Pull three buckets in parallel** via Slack tools (resolve names per
+   `skills/_lib/mcp-tools.md`). The current
    user's Slack id is `<U...>` (from `slack_search_users` self lookup —
    cache it in `private/slack/me.json` on first run).
 
@@ -111,9 +112,10 @@ Optional `since` argument:
 
 ## Hard rules
 
-- **NEVER** call any Slack tool that would mark a message read or send a
-  message. The `slack-mcp` server in this setup is read-only by config;
-  if a write tool ever appears, do not use it.
+- **NEVER** write to Slack during a review: no messages, reactions,
+  canvases, or list changes, and never mark anything read. Propose any
+  reply as a draft; posting it follows the ask-every-time rule in
+  `skills/_lib/mcp-tools.md`.
 - **NEVER** copy verbatim Slack content into a tracked file under
   `omgjlk/waddy`. Slack content is private — it goes only in `private/`.
 - The DM/private-channel search requires user consent per

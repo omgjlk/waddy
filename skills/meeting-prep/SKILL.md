@@ -24,7 +24,7 @@ Optional meeting identifier:
 1. **Find the meeting.** Use workiq:
 
    ```
-   workiq-ask_work_iq
+   Work IQ ask   (resolve per skills/_lib/mcp-tools.md)
      question="What is my next meeting (or the meeting matching '<X>')?
               Give me: subject, start time, duration, organizer,
               attendee list, location/teams link, agenda, and links to

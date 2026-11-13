@@ -31,9 +31,13 @@ ask, and record; the human decides what becomes durable.
    commit anything from `private/` to the tracked tree.
 4. **MCP routing**:
    - GitHub anything → `github-mcp-server`
-   - Slack anything → `slack-mcp` (read-only — never mark messages read,
-     never send messages)
-   - Outlook / Teams / Office / Word → `workiq` (and the bundled plugin
+   - Slack anything → Slack connector, or `slack-mcp` as a fallback. Reads
+     are free. Every write (message, reaction, canvas, list) needs the
+     user's explicit approval of the exact draft, every time, with no
+     autopilot exception. Never mark messages read. See
+     `skills/_lib/mcp-tools.md`.
+   - Outlook / Teams / Office / Word → Work IQ connector, or `workiq` as a
+     fallback (and the bundled plugin
      skills: `daily-outlook-triage`, `action-item-extractor`,
      `channel-digest`, etc. — use them when they fit)
    - Personal Google Calendar → see `docs/google-calendar-mcp.md`;

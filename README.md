@@ -16,6 +16,7 @@ I shipped this repo publicly so others can fork it, gut the personal bits, and a
 - Turns Teams meeting transcripts into durable, Obsidian-friendly notes.
 - Peeks at running Copilot CLI sessions to figure out what I've actually been doing when I forget to tell it.
 - Produces a shareable end-of-day summary and a "what should I be doing today" morning brief.
+- Writes everything human-facing — issues, PRs, comments, board items, Slack messages, notes — in [Google developer documentation style](https://developers.google.com/style).
 
 ## What it does NOT do
 
@@ -28,8 +29,8 @@ I shipped this repo publicly so others can fork it, gut the personal bits, and a
 - [GitHub Copilot CLI](https://docs.github.com/copilot/how-tos/set-up/install-copilot-cli)
 - MCP servers:
   - `github-mcp-server` (preconfigured by Copilot CLI)
-  - [`slack-mcp`](https://github.com/github/copilot-slack-mcp) (Slack reading)
-  - [`workiq`](https://github.com/microsoft/work-iq) (Outlook / Teams / Office)
+  - Slack: the Slack [Copilot connector](https://docs.github.com/en/copilot/concepts/customizations/copilot-connectors), or [`slack-mcp`](https://github.com/github/copilot-slack-mcp)
+  - Outlook, Teams, and Office: the Work IQ Copilot connector, or [`workiq`](https://github.com/microsoft/work-iq)
 - A GitHub Project (v2) board with a single-select `Status` field including options `To do`, `In progress`, `Paused`, `Done`. Add `Paused` via the project's field settings if it isn't present.
 
 ## Setup (for forkers)

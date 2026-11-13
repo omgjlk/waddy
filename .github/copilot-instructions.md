@@ -11,6 +11,8 @@ A few Copilot-CLI–specific notes:
   next to it and are referenced by the primary agent.
 - Skills referenced by the agent live under `skills/`. They are **not**
   installed as plugins — the agent reads the relevant `SKILL.md` on demand.
-- Required MCP servers: `github-mcp-server`, `slack-mcp`, `workiq`. If any
+- Required MCP servers: `github-mcp-server`, plus Slack and Work IQ through
+  Copilot connectors or the `slack-mcp` and `workiq` servers (see
+  `skills/_lib/mcp-tools.md`). If any
   are missing, the agent should tell the user and degrade gracefully rather
   than guess.

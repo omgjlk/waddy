@@ -26,8 +26,9 @@ fills them with generic, private busy blocks.
 
 ## Capability note — this can be fully automated
 
-**workiq can read *and* write the work calendar.** Creating/extending busy
-blocks is real, not advisory:
+**Work IQ can read *and* write the work calendar.** Creating/extending busy
+blocks is real, not advisory. Tool names below use the `workiq-` server
+prefix; with the connector, resolve them per `skills/_lib/mcp-tools.md`.
 - Read work calendar: `workiq-fetch` on `/me/calendarView?startDateTime=…&endDateTime=…&$select=subject,start,end,showAs,isAllDay,sensitivity`.
 - Create a busy block: `workiq-create_entity` `parentUrl=/me/events`.
 - Extend/adjust one: `workiq-update_entity` `entityUrl=/me/events/{id}`.

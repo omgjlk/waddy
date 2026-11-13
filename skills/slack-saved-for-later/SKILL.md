@@ -14,7 +14,8 @@ Trigger phrases: "process my saved for later", "clean up saved slack",
 
 ## Steps
 
-1. **Fetch saved items** via `slack-mcp`:
+1. **Fetch saved items** via Slack search (resolve names per
+   `skills/_lib/mcp-tools.md`):
 
    ```
    slack_search_public_and_private

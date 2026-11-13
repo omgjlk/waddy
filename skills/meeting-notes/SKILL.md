@@ -26,7 +26,7 @@ Meeting identifier:
 1. **Locate the transcript.** Use workiq:
 
    ```
-   workiq-ask_work_iq
+   Work IQ ask   (resolve per skills/_lib/mcp-tools.md)
      question="Find the transcript of my most recent (or specified)
               meeting: <X>. Return: subject, start time, attendees, and
               the full transcript text."

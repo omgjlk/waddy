@@ -16,7 +16,8 @@ A focused subagent that owns the transcript-to-note flow. Loads
 
 ## Data sources
 
-- **Transcript**: `workiq-ask_work_iq` ("find the transcript of …").
+- **Transcript**: Work IQ `ask` ("find the transcript of …"); see
+  `skills/_lib/mcp-tools.md` and `skills/_lib/workiq-notes.md`.
 - **Action items**: the `action-item-extractor` plugin skill (already
   installed) does the bulk of the action-item parsing. Use it; don't
   re-invent.

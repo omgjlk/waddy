@@ -20,14 +20,14 @@ Trigger phrases: "morning brief", "what should I do today",
 2. **Calendar (Outlook via workiq).** Ask:
 
    ```
-   workiq-ask_work_iq
+   Work IQ ask   (resolve per skills/_lib/mcp-tools.md)
      question="What meetings do I have today? List them with start time,
               duration, organizer, attendees, and a one-line subject for
               each. Include links to any attached documents."
    ```
 
-   If `workiq-accept_eula` hasn't been completed, tell the user and stop
-   the calendar portion (don't block the rest of the brief).
+   If Work IQ is unavailable, tell the user and skip the calendar
+   portion (don't block the rest of the brief).
 
 3. **Personal calendar (Google).** If `private/config.json` has
    `google_calendar.enabled = true`, call
