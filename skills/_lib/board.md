@@ -51,10 +51,29 @@ on the board, not just Status.
 | Action | Tool | Notes |
 | --- | --- | --- |
 | Inspect project | `github-mcp-server-projects_get` (method `get_project`) | Sanity-check before any write |
-| List items | `github-mcp-server-projects_list` (method `list_project_items`) | Pass `fields: [status_field_id]` to see status |
-| Add issue/PR to board | `github-mcp-server-projects_write` (method `add_project_item`) | `item_type: "issue"` or `"pull_request"` |
-| Update status | `github-mcp-server-projects_write` (method `update_project_item`) | `updated_field: {id: status_field_id, value: {single_select_option_id: "..."}}` |
+| List items | `github-mcp-server-projects_list` (method `list_project_items`) | Pass `fields: ["<status_field_database_id>"]` — the **numeric database id as a string**, not the `PVTSSF_…` node id |
+| Add issue/PR to board | `github-mcp-server-projects_write` (method `add_project_item`) | Needs all four of `item_type`, `item_owner`, `item_repo`, `issue_number`, plus `item_id` set to the issue's **database id** |
+| Update status | `github-mcp-server-projects_write` (method `update_project_item`) | `item_id` is the **project item database id**; `updated_field: {"id": <field database id as number>, "value": "<option-id>"}` |
 | Remove item | `github-mcp-server-projects_write` (method `delete_project_item`) | Rare — usually move to Done instead |
+
+### Identifier types, because the API mixes them
+
+Getting these wrong produces unhelpful type errors, so keep them straight:
+
+| Value | Form | Example |
+| --- | --- | --- |
+| `fields` entry on `list_project_items` | database id, **as a string** | `["12345678"]` |
+| `updated_field.id` | database id, **as a number** | `12345678` |
+| `updated_field.value` for single-select | the option id, **a bare string** | `"a1b2c3d4"` — *not* `{"single_select_option_id": …}` |
+| `item_id` on `add_project_item` | the issue's database id | `9876543210` |
+| `item_id` on `update_project_item` | the **project item** database id returned by `add_project_item` | `223344556` |
+
+All five are illustrative. Read your real values from `list_project_fields` and
+`private/config.json`; never hardcode them in this repo.
+
+Store both `status_field_id` (the `PVTSSF_…` node id) and
+`status_field_database_id` (the number) in `private/config.json`. The node id is
+needed for GraphQL fallbacks; the database id is what these tools want.
 
 ## Draft items (board entries with no backing issue/PR)
 

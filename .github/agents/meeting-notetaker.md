@@ -43,4 +43,7 @@ A focused subagent that owns the transcript-to-note flow. Loads
 - Action items owed by @omgjlk are proposed as `start-task` or
   `touch-task` candidates. Action items owed by others are recorded in
   the note but do NOT create waddy tasks.
+- Never write to `/tmp` or any path outside the repo tree. That includes
+  backups of a note before editing it. Put scratch or backup files under
+  `private/scratch/`, and delete them when you're done.
 

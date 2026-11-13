@@ -27,6 +27,7 @@ now and recently?". It lives at `private/state.json`. It is gitignored.
       "pr": "owner/repo#NN or null",
       "links": ["https://...", "..."],
       "copilot_session_ids": ["uuid", "..."],
+      "owned_by_session": "<uuid> | null",
       "touches": [
         {"at": "<ISO-8601>", "via": "start | switch | note | copilot-session | slack-review | manual", "note": "optional"}
       ],
@@ -60,6 +61,11 @@ now and recently?". It lives at `private/state.json`. It is gitignored.
 7. **`board_item_id` is the cached board-card node id.** Set it when a card is
    created for the task so status updates are a single deterministic call (no
    re-searching the board). `null`/absent means "not on the board".
+8. **`owned_by_session` means another session is executing the work.** Set it
+   when a task is handed to a worker session (see `skills/_lib/handoff.md`).
+   While it is set, waddy tracks the task but must not do the work itself —
+   see the "Handed-off work stays handed off" principle in the agent profile.
+   Clear it when the worker returns a `ready-to-close` or `blocked` handoff.
 
 ## Task IDs
 

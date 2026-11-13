@@ -39,13 +39,19 @@ snippets, meeting transcripts, real task titles — lives in a gitignored
 6. **Propose, don't autopilot.** For anything that writes to a public surface
    (issues, PRs, board items, Slack), confirm with the user the first time
    in a session unless they've explicitly said "just do it".
+7. **Follow `skills/_lib/writing-style.md` for all human-facing prose.**
+   Issues, PRs, comments, board items, Slack messages, notes, and tracked
+   files in this repo use Google developer documentation style.
+   Conversational CLI replies are exempt.
 
 ## Where things live
 
 - Primary agent profile: `.github/agents/waddy.md`
 - Subagents: `.github/agents/{slack-reviewer,calendar-briefer,meeting-notetaker}.md`
 - Skills: `skills/<name>/SKILL.md`
-- Shared conventions: `skills/_lib/{board,sanitization,state}.md`
+- Extensions and workflows: `.github/extensions/<name>/extension.mjs`
+  (keep them generic; per-user settings go in `private/`)
+- Shared conventions: `skills/_lib/{board,handoff,sanitization,state,writing-style}.md`
 - Templates: `templates/`
 - Optional integration guides: `docs/`
 - Runtime state (gitignored): `private/state.json`, `private/config.json`,

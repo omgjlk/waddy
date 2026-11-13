@@ -33,6 +33,12 @@ prefix; with the connector, resolve them per `skills/_lib/mcp-tools.md`.
 - Create a busy block: `workiq-create_entity` `parentUrl=/me/events`.
 - Extend/adjust one: `workiq-update_entity` `entityUrl=/me/events/{id}`.
 
+**Pass the event payload as `jsonBody`.** Not `entity`, not `body`. A wrong
+parameter name fails with only `An error occurred invoking 'create_entity'` —
+no status code and no Graph error — which reads exactly like a server outage.
+If a write fails that way, check the parameter name before concluding anything
+is down.
+
 Writes take effect immediately and are visible to colleagues, so **confirm
 before creating or editing** (propose-don't-autopilot).
 
@@ -83,7 +89,8 @@ Friday). Accept "today", "this week", "next week", or an explicit range.
    include partial-extends / include after-hours / none).
 
 6. **Write (after confirmation).**
-   - **New block** — `workiq-create_entity` `/me/events` with:
+   - **New block** — `workiq-create_entity` with `parentUrl=/me/events` and
+     this as `jsonBody`:
      ```json
      {
        "subject": "Busy",
