@@ -97,12 +97,16 @@ Friday). Accept "today", "this week", "next week", or an explicit range.
        "showAs": "busy",
        "sensitivity": "private",
        "isReminderOn": false,
-       "start": {"dateTime": "YYYY-MM-DDTHH:MM:SS", "timeZone": "Pacific Standard Time"},
-       "end":   {"dateTime": "YYYY-MM-DDTHH:MM:SS", "timeZone": "Pacific Standard Time"}
+       "start": {"dateTime": "YYYY-MM-DDTHH:MM:SSZ", "timeZone": "UTC"},
+       "end":   {"dateTime": "YYYY-MM-DDTHH:MM:SSZ", "timeZone": "UTC"}
      }
      ```
-     Use the windows zone name `"Pacific Standard Time"` with local wall-clock
-     times — it is DST-safe (handles PDT automatically). `subject` stays
+     Convert local times to UTC yourself and pass `"timeZone": "UTC"`. Don't
+     rely on a Windows zone name such as `"Pacific Standard Time"`: observed
+     2026-11-16 through the Work IQ connector, an `update_entity` with that
+     zone was stored as if the wall-clock times were UTC, and the event moved
+     eight hours. After any write, read the event back and check `start` and
+     `end` before reporting success. `subject` stays
      generic ("Busy"); never put the personal event's real title/details in it.
    - **Extend a partial cover** — `workiq-update_entity`
      `/me/events/{id}` with just the changed `start`/`end` to span the
